@@ -1,3 +1,4 @@
+<?php include '../../includes/header.php'; ?>
 <main>
     <h2>Customer Reviews</h2>
     <?php include 'layouts/review.main.php'; ?>
@@ -11,3 +12,4 @@
         <?php endforeach; ?>
     </ul>
 </main>
+<?php include '../../includes/footer.php'; ?>
