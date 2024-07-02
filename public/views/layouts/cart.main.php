@@ -32,4 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     header('Location: /webshop/public/views/cart.view.php');
     exit();
+
+    //TODO: verknüpfen von user_id und cart_items, nach abmelden soll die cart mit den zugehörigen cart_items(id) für den user wieder sichtbar sein beim anmelden(session)
 }
