@@ -20,6 +20,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
             $_SESSION['logged_in'] = true;
+
+            if (isset($_SESSION['pending_cart'])) {
+                $product_id = $_SESSION['pending_cart']['product_id'];
+                $quantity = $_SESSION['pending_cart']['quantity'];
+                $user_id = $_SESSION['user_id'];
+
+                require '../../../src/classes/Cart.php';
+                $cart = new Cart($pdo, $user_id);
+                $cart->addItem($user_id, $product_id, $quantity);
+
+                unset($_SESSION['pending_cart']);
+            }
+
+            header('Location: /webshop/public/views/cart.view.php');
+            exit();
             if ($user['role'] === 'admin') {
                 header('Location: /webshop/public/admin/index.php');
             } else {

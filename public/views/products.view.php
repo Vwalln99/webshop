@@ -1,18 +1,47 @@
-<?php include '../../includes/header.php'; ?>
+<?php
 
-<main>
-    <h2>Our Products</h2>
-    <?php include 'layouts/products.main.php'; ?>
+require '../../config/database.php';
+require '../../src/classes/Product.php';
+require '../../src/classes/Review.php';
+
+$productObj = new Product($pdo);
+$reviewObj = new Review($pdo);
+
+$products = $productObj->getAllProducts();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link rel="stylesheet" href="/public/css/styles.css">
+</head>
+
+<body>
+    <?php include '../../includes/header.php'; ?>
     <div class="products">
-        <?php foreach ($products as $product) : ?>
-            <div class="product">
-                <h2><?php echo htmlspecialchars($product['name']); ?></h2>
-                <p><?php echo htmlspecialchars($product['description']); ?></p>
-                <p><?php echo htmlspecialchars($product['price']); ?> EUR</p>
-                <a href="product.view.php?id=<?php echo $product['id']; ?>">View Details</a>
-            </div>
-        <?php endforeach; ?>
+        <h2>Products</h2>
+        <ul>
+            <?php foreach ($products as $product) : ?>
+                <li>
+                    <a href="product.view.php?id=<?php echo $product['id']; ?>">
+                        <?php echo htmlspecialchars($product['name']); ?>
+                    </a>
+                    <p>Price: <?php echo htmlspecialchars($product['price']); ?> EUR</p>
+                    <p>Rating:
+                        <?php
+                        $average_rating = $reviewObj->getAverageRatingByProductId($product['id']);
+                        echo $average_rating ? number_format($average_rating, 1) : 'No ratings yet';
+                        ?>
+                    </p>
+                </li>
+            <?php endforeach; ?>
+        </ul>
     </div>
-</main>
+    <?php include '../../includes/footer.php'; ?>
+</body>
 
-<?php include '../../includes/footer.php'; ?>
+</html>
