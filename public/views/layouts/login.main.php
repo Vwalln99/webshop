@@ -32,9 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 unset($_SESSION['pending_cart']);
             }
-
-            header('Location: /webshop/public/views/cart.view.php');
-            exit();
             if ($user['role'] === 'admin') {
                 header('Location: /webshop/public/admin/index.php');
             } else {
@@ -42,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             exit();
         } else {
-            echo  "Ungültiges Passwort.";
+            echo "Ungültiges Passwort.";
         }
     } else {
         echo "Benutzer nicht gefunden.";

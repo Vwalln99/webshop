@@ -14,10 +14,17 @@ if (!$product_id) {
 }
 
 $product = $productObj->getProductById($product_id);
+if (!$product) {
+    echo "Product not found.";
+    exit();
+}
+
 $reviews = $reviewObj->getReviewsByProductId($product_id);
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_SESSION['user_id'])) {
+    session_start();
+    if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
         if (isset($_POST['rating']) && isset($_POST['comment'])) {
             $rating = $_POST['rating'];
             $comment = $_POST['comment'];
@@ -67,7 +74,7 @@ $average_rating = $reviewObj->getAverageRatingByProductId($product_id);
         <div class="reviews-section">
             <p>Average Rating: <?php echo $average_rating ? number_format($average_rating, 1) : 'No ratings yet'; ?></p>
             <h3>Reviews</h3>
-            <?php if (isset($_SESSION['user_id'])) : ?>
+            <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) : ?>
                 <form method="post" action="">
                     <label for="rating">Rating:</label>
                     <select id="rating" name="rating" required>
