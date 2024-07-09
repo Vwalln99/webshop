@@ -11,7 +11,7 @@ class Product
 
     public function getAllProducts()
     {
-        $stmt = $this->db->prepare("SELECT * FROM products");
+        $stmt = $this->db->prepare("SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -23,24 +23,31 @@ class Product
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function addProduct($name, $description, $price)
+    public function addProduct($name, $description, $price, $category_id)
     {
-        $sql = "INSERT INTO products(name, description, price) VALUES (:name, :description, :price)";
+        $sql = "INSERT INTO products(name, description, price, category_id) VALUES (:name, :description, :price, :category_id)";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([':name' => $name, ':description' => $description, ':price' => $price]);
+        return $stmt->execute([':name' => $name, ':description' => $description, ':price' => $price, ':category_id' => $category_id]);
     }
 
-    public function updateProduct($id, $name, $description, $price)
+    public function updateProduct($id, $name, $description, $price, $category_id)
     {
-        $sql = "UPDATE products SET name = :name, description=:description, price=:price WHERE id=:id";
+        $sql = "UPDATE products SET name = :name, description=:description, price=:price, category_id=:category_id WHERE id=:id";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([':name' => $name, ':description' => $description, ':price' => $price, ':id' => $id]);
+        return $stmt->execute([':name' => $name, ':description' => $description, ':price' => $price, ':category_id' => $category_id, ':id' => $id]);
     }
 
     public function deleteProduct($id)
     {
-        $sql = "DELETE FROM products WHERE id =:id";
+        $sql = "DELETE FROM products WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([':id' => $id]);
+    }
+
+    public function getAllCategories()
+    {
+        $stmt = $this->db->prepare("SELECT * FROM categories");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

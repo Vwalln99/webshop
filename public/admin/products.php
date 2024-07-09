@@ -5,15 +5,17 @@ require '../../config/database.php';
 require '../../src/classes/Product.php';
 
 $productObj = new Product($pdo);
+$categories = $productObj->getAllCategories();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add'])) {
         $name = $_POST['name'] ?? null;
         $description = $_POST['description'] ?? null;
         $price = $_POST['price'] ?? null;
+        $category_id = $_POST['category_id'] ?? null;
 
         if ($name && $description && $price) {
-            $productObj->addProduct($name, $description, $price);
+            $productObj->addProduct($name, $description, $price, $category_id);
         } else {
             echo "Bitte füllen Sie alle Felder aus.";
         }
@@ -22,9 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = $_POST['name'] ?? null;
         $description = $_POST['description'] ?? null;
         $price = $_POST['price'] ?? null;
+        $category_id = $_POST['category_id'] ?? null;
 
-        if ($id && $name && $description && $price) {
-            $productObj->updateProduct($id, $name, $description, $price);
+        if ($id && $name && $description && $price && $category_id) {
+            $productObj->updateProduct($id, $name, $description, $price, $category_id);
         } else {
             echo "Bitte füllen Sie alle Felder aus.";
         }
@@ -75,6 +78,13 @@ $products = $productObj->getAllProducts();
         <label for="price">Preis:</label>
         <input type="number" id="price" name="price" step="0.01" required><br><br>
 
+        <label for="category_id">Kategorie:</label>
+        <select name="category_id" id="category_id">
+            <?php foreach ($categories as $category) : ?>
+                <option value="<?php echo $category['id']; ?>"><?php echo htmlspecialchars($category['name']); ?></option>
+            <?php endforeach; ?>
+        </select><br><br>
+
         <input type="submit" name="add" value="Hinzufügen">
     </form>
 
@@ -93,6 +103,12 @@ $products = $productObj->getAllProducts();
                     <td><input type="text" name="name" value="<?php echo htmlspecialchars($product['name']); ?>"></td>
                     <td><input type="text" name="description" value="<?php echo htmlspecialchars($product['description']); ?>"></td>
                     <td><input type="number" name="price" step="0.01" value="<?php echo htmlspecialchars($product['price']); ?>"></td>
+                    <td>
+                        <select name="category_id">
+                            <?php foreach ($categories as $category) : ?>
+                                <option value="<?php echo $category['id']; ?>" <?php echo ($category['id'] == $product['category_id']) ? 'selected' : ''; ?>><?php echo htmlspecialchars($category['name']); ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     <td>
                         <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
                         <input type="submit" name="update" value="Aktualisieren">

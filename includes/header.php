@@ -31,6 +31,19 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                 <li><a href="/webshop/public/index.php">Home</a></li>
                 <li><a href="/webshop/public/views/products.view.php">Products</a></li>
                 <li><a href="/webshop/public/views/cart.view.php">Cart (<?php echo $totalItemsInCart; ?>)</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Kategorien</a>
+                    <div class="dropdown-content">
+                        <?php
+                        $stmt = $pdo->query("SELECT * FROM categories");
+                        $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                        foreach ($categories as $category) {
+                            echo '<a href="/webshop/public/views/category.view.php?id=' . $category['id'] . '">' . htmlspecialchars($category['name']) . '</a>';
+                        }
+                        ?>
+                    </div>
+                </li>
                 <?php
                 if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                     echo '<li><a href="#">' . $_SESSION['username'] . '</a></li>';

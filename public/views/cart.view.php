@@ -1,8 +1,15 @@
 <?php
 
+use App\Email;
+use PHPMailer\PHPMailer\PHPMailer;
+
+require '../../vendor/autoload.php';
+
 
 require '../../config/database.php';
+require '../../config/config.php';
 require '../../src/classes/Cart.php';
+require '../../src/classes/Email.php';
 include '../../includes/header.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -12,6 +19,28 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 $cart = new Cart($pdo, $user_id);
+$cartItems = $cart->getCartItems();
+$totalPrice = $cart->getTotalPrice();
+
+if (isset($_GET['success']) && $_GET['success'] === 'true') {
+    $orderDetails = '<h2>Order Confirmation</h2><p>Thank you for your order! Here are the details:</p><ul>';
+    foreach ($cartItems as $item) {
+        $orderDetails .= '<li>' . htmlspecialchars($item['name']) . ' - ' . $item['quantity'] . ' x ' . htmlspecialchars($item['price']) . ' EUR </li>';
+    }
+    $orderDetails .= '</ul>';
+
+    $email = new Email($mail_config);
+    $user_email = "wallner.viktoria@gmx.net";
+    $subject = "Order Confirmation";
+    $message = $orderDetails;
+
+    if ($email->send_mail($mail_config['username'], $user_email, $subject, $message)) {
+        echo "Confirmation email sent!";
+    } else {
+        echo "Failed to send confirmation email.";
+    }
+    $cart->removeAllItems();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['update_quantity'])) {
@@ -23,9 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cart->removeItem($product_id);
     }
 }
-
-$cartItems = $cart->getCartItems();
-$totalPrice = $cart->getTotalPrice();
 ?>
 
 <!DOCTYPE html>
@@ -51,13 +77,9 @@ $totalPrice = $cart->getTotalPrice();
                         <th>Quantity</th>
                         <th>Price</th>
                         <th>Total</th>
+                        <th>Action</th>
                     </tr>
-                    <?php
-                    $totalPrice = 0;
-                    foreach ($cartItems as $item) :
-                        $total = $item['price'] * $item['quantity'];
-                        $totalPrice += $total;
-                    ?>
+                    <?php foreach ($cartItems as $item) : ?>
                         <tr>
                             <td><?php echo htmlspecialchars($item['name']); ?></td>
                             <td>
@@ -66,7 +88,7 @@ $totalPrice = $cart->getTotalPrice();
                                 <button type="submit" name="update_quantity">Update</button>
                             </td>
                             <td><?php echo htmlspecialchars($item['price']); ?> EUR</td>
-                            <td><?php echo $total; ?> EUR</td>
+                            <td><?php echo $item['price'] * $item['quantity']; ?> EUR</td>
                             <td>
                                 <button type="submit" name="remove_item">Remove</button>
                             </td>

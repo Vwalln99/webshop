@@ -66,4 +66,11 @@ class Cart
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['total'];
     }
+
+    public function removeAllItems()
+    {
+        $sql = "DELETE FROM carts WHERE user_id = :user_id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['user_id' => $this->user_id]);
+    }
 }
