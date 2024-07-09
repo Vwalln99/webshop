@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include '../../config/database.php';
+//include '../../config/database.php';
 
 $totalItemsInCart = 0;
 
@@ -21,7 +21,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webshop</title>
-    <link rel="stylesheet" href="/public/css/styles.css">
+    <link rel="stylesheet" href="/webshop/public/styles.css">
 </head>
 
 <body>

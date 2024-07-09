@@ -44,21 +44,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $average_rating = $reviewObj->getAverageRatingByProductId($product_id);
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($product['name']); ?></title>
-</head>
-
-<body>
+<main>
     <?php include '../../includes/header.php'; ?>
 
     <main>
         <h2>Product Details</h2>
-        <div class="product-detail">
+        <div>
+            <?php
+            $images = $productObj->getProductImages($product_id);
+            if ($images) {
+                foreach ($images as $image) {
+                    echo '<img src="' . htmlspecialchars($image['image_url']) . '" alt="' . htmlspecialchars($product['name']) . '" style="width:300px;height:300px;">';
+                }
+            }
+            ?>
             <?php include 'layouts/product.main.php'; ?>
             <h2><?php echo htmlspecialchars($product['name']); ?></h2>
             <p><?php echo htmlspecialchars($product['description']); ?></p>
@@ -71,9 +70,24 @@ $average_rating = $reviewObj->getAverageRatingByProductId($product_id);
             </form>
         </div>
 
-        <div class="reviews-section">
-            <p>Average Rating: <?php echo $average_rating ? number_format($average_rating, 1) : 'No ratings yet'; ?></p>
+        <div>
             <h3>Reviews</h3>
+            <p>Average Rating: <?php echo $average_rating ? number_format($average_rating, 1) : 'No ratings yet'; ?></p>
+
+            <?php if ($reviews) : ?>
+                <ul>
+                    <?php foreach ($reviews as $review) : ?>
+                        <li>
+                            <strong><?php echo htmlspecialchars($review['username']); ?></strong>
+                            <span><?php echo htmlspecialchars($review['rating']); ?> stars</span>
+                            <p><?php echo htmlspecialchars($review['comment']); ?></p>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else : ?>
+                <p>No reviews yet.</p>
+            <?php endif; ?>
+            <h3>Rate and review this product</h3>
             <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) : ?>
                 <form method="post" action="">
                     <label for="rating">Rating:</label>
@@ -94,23 +108,8 @@ $average_rating = $reviewObj->getAverageRatingByProductId($product_id);
                 <p>You must be logged in to write a review.</p>
             <?php endif; ?>
 
-            <?php if ($reviews) : ?>
-                <ul>
-                    <?php foreach ($reviews as $review) : ?>
-                        <li>
-                            <strong><?php echo htmlspecialchars($review['username']); ?></strong>
-                            <span><?php echo htmlspecialchars($review['rating']); ?> stars</span>
-                            <p><?php echo htmlspecialchars($review['comment']); ?></p>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php else : ?>
-                <p>No reviews yet.</p>
-            <?php endif; ?>
         </div>
     </main>
 
     <?php include '../../includes/footer.php'; ?>
-</body>
-
-</html>
+</main>

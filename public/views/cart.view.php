@@ -1,7 +1,6 @@
 <?php
 
 use App\Email;
-use PHPMailer\PHPMailer\PHPMailer;
 
 require '../../vendor/autoload.php';
 
@@ -28,6 +27,7 @@ if (isset($_GET['success']) && $_GET['success'] === 'true') {
         $orderDetails .= '<li>' . htmlspecialchars($item['name']) . ' - ' . $item['quantity'] . ' x ' . htmlspecialchars($item['price']) . ' EUR </li>';
     }
     $orderDetails .= '</ul>';
+    $orderDetails .= '<p>Total Price: ' . $totalPrice . ' EUR</p>';
 
     $email = new Email($mail_config);
     $user_email = "wallner.viktoria@gmx.net";
@@ -51,20 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $product_id = $_POST['product_id'];
         $cart->removeItem($product_id);
     }
+    header('Location: cart.view.php');
+    exit();
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Cart</title>
-    <link rel="stylesheet" href="/public/css/styles.css">
-</head>
-
-<body>
+<main>
     <div class="cart">
         <h2>Your Cart</h2>
         <?php if (empty($cartItems)) : ?>
@@ -105,6 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
     </div>
     <?php include '../../includes/footer.php'; ?>
-</body>
+</main>
 
 </html>

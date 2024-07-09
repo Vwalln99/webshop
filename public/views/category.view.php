@@ -7,6 +7,7 @@ $productObj = new Product($pdo);
 $reviewObj = new Review($pdo);
 
 $products = $productObj->getAllProducts();
+$product_id = $_GET['id'] ?? null;
 
 $category_id = $_GET['id'] ?? null;
 
@@ -20,17 +21,7 @@ $stmt->execute(['category_id' => $category_id]);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produkte in dieser Kategorie</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-
-<body>
+<main>
     <?php include '../../includes/header.php'; ?>
 
     <h2>Produkte in dieser Kategorie</h2>
@@ -38,6 +29,14 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php foreach ($products as $product) : ?>
         <li>
             <a href="product.view.php?id=<?php echo $product['id']; ?>">
+                <?php
+                $images = $productObj->getProductImages($product_id);
+                if ($images) {
+                    foreach ($images as $image) {
+                        echo '<img src="' . htmlspecialchars($image['image_url']) . '" alt="' . htmlspecialchars($product['name']) . '" style="width:100px;height:100px;">';
+                    }
+                }
+                ?>
                 <?php echo htmlspecialchars($product['name']); ?>
             </a>
             <p>Price: <?php echo htmlspecialchars($product['price']); ?> EUR</p>
@@ -51,6 +50,4 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php endforeach; ?>
 
     <?php include '../../includes/footer.php'; ?>
-</body>
-
-</html>
+</main>

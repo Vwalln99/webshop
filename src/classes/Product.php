@@ -50,4 +50,17 @@ class Product
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getProductImages($product_id)
+    {
+        $stmt = $this->db->prepare("SELECT image_url FROM product_images WHERE product_id = :product_id");
+        $stmt->execute([':product_id' => $product_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function uploadProductImage($product_id, $image_url)
+    {
+        $stmt = $this->db->prepare("INSERT INTO product_images (product_id, image_url) VALUES (:product_id, :image_url)");
+        $stmt->execute([':product_id' => $product_id, ':image_url' => $image_url]);
+    }
 }

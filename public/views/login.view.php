@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="de">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-
-<body>
+<main>
     <h2>Login</h2>
     <?php if (isset($error)) : ?>
         <p><?php echo $error; ?></p>
@@ -22,6 +13,4 @@
         <input type="submit" value="Login">
     </form>
     <a href="/webshop/public/views/register.view.php">Neuen Account erstellen</a>
-</body>
-
-</html>
+</main>

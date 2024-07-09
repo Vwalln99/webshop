@@ -10,24 +10,20 @@ $reviewObj = new Review($pdo);
 $products = $productObj->getAllProducts();
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products</title>
-    <link rel="stylesheet" href="/public/css/styles.css">
-</head>
-
-<body>
+<main>
     <?php include '../../includes/header.php'; ?>
-    <div class="products">
+    <div>
         <h2>Products</h2>
         <ul>
             <?php foreach ($products as $product) : ?>
                 <li>
                     <a href="product.view.php?id=<?php echo $product['id']; ?>">
+                        <?php
+                        $images = $productObj->getProductImages($product['id']);
+                        if ($images) {
+                            echo '<img src="' . htmlspecialchars($images[0]['image_url']) . '" alt="' . htmlspecialchars($product['name']) . '" style="width:100px;height:75px;">';
+                        }
+                        ?>
                         <?php echo htmlspecialchars($product['name']); ?>
                     </a>
                     <p>Price: <?php echo htmlspecialchars($product['price']); ?> EUR</p>
@@ -42,6 +38,4 @@ $products = $productObj->getAllProducts();
         </ul>
     </div>
     <?php include '../../includes/footer.php'; ?>
-</body>
-
-</html>
+</main>
