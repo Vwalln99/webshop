@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($user['role'] === 'admin') {
                 header('Location: /webshop/public/admin/index.php');
             } else {
-                header('Location: /webshop/public/index.php');
+                header('Location: /webshop/public/views/index.php');
             }
             exit();
         }

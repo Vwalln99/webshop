@@ -1,6 +1,6 @@
 <?php include '../../includes/header.php'; ?>
 <?php include '../../config/database.php'; ?>
-<main>
+<main class="checkout-main">
     <h2>Checkout</h2>
 
     <form action="/webshop/public/views/layouts/checkout.main.php" method="post">

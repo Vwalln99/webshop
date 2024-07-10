@@ -24,7 +24,8 @@ $totalPrice = $cart->getTotalPrice();
 if (isset($_GET['success']) && $_GET['success'] === 'true') {
     $orderDetails = '<p>Thank you for your order! Here are the details:</p><ul>';
     foreach ($cartItems as $item) {
-        $orderDetails .= '<li>' . $item['name'] . ' - ' . $item['quantity'] . ' x ' . $item['price'] . ' EUR </li>' . '<p>Total Price: ' . $totalPrice . ' EUR</p>';
+        $orderDetails .= '<li>' . $item['name'] . ' - ' . $item['quantity'] . ' x ' . $item['price'] . ' EUR </li>';
+        $orderDetails .= '<p>Total Price: ' . $totalPrice . ' EUR</p>';
     }
 
     $email = new Email($mail_config);
@@ -58,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <main>
     <div class="cart">
-        <h2>Your Cart</h2>
+        <h2>Your Orders</h2>
         <?php if (empty($cartItems)) : ?>
             <p>Your cart is empty.</p>
         <?php else : ?>
@@ -76,12 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td>
                                 <input type="number" name="quantity" value="<?php echo $item['quantity']; ?>" min="1">
                                 <input type="hidden" name="product_id" value="<?php echo $item['id']; ?>">
-                                <button type="submit" name="update_quantity">Update</button>
+                                <button type="submit" name="update_quantity">🗸</button>
                             </td>
                             <td><?php echo htmlspecialchars($item['price']); ?> EUR</td>
                             <td><?php echo $item['price'] * $item['quantity']; ?> EUR</td>
                             <td>
-                                <button type="submit" name="remove_item">Remove</button>
+                                <button type="submit" name="remove_item">🗑️</button>
                             </td>
                         </tr>
                     <?php endforeach; ?>

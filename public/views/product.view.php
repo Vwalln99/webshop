@@ -46,9 +46,9 @@ $average_rating = $reviewObj->getAverageRatingByProductId($product_id);
 ?>
 
 
-<main>
-    <h2>Product Details</h2>
+<main class="product-detail-main">
     <div>
+        <h2>Product Details</h2>
         <?php
         $images = $productObj->getProductImages($product_id);
         if ($images) {
@@ -57,56 +57,59 @@ $average_rating = $reviewObj->getAverageRatingByProductId($product_id);
             }
         }
         ?>
-        <?php include 'layouts/product.main.php'; ?>
-        <h2><?php echo htmlspecialchars($product['name']); ?></h2>
-        <p><?php echo htmlspecialchars($product['description']); ?></p>
-        <p><?php echo htmlspecialchars($product['price']); ?> EUR</p>
-        <form action="/webshop/public/views/layouts/cart.main.php" method="post">
-            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-            <label for="quantity">Quantity:</label>
-            <input type="number" name="quantity" value="1" min="1">
-            <button type="submit">Add to Cart</button>
-        </form>
+        <div class="product-detail">
+            <?php include 'layouts/product.main.php'; ?>
+            <h2><?php echo htmlspecialchars($product['name']); ?></h2>
+            <p><?php echo htmlspecialchars($product['description']); ?></p>
+            <p><?php echo htmlspecialchars($product['price']); ?> EUR</p>
+            <form action="/webshop/public/views/layouts/cart.main.php" method="post">
+                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" value="1" min="1">
+                <button type="submit">Add to Cart</button>
+            </form>
+            <p>Average Rating: <?php echo $average_rating ? number_format($average_rating, 1) . "⭐" : 'No ratings yet'; ?></p>
+        </div>
     </div>
-
-    <div>
-        <h3>Reviews</h3>
-        <p>Average Rating: <?php echo $average_rating ? number_format($average_rating, 1) . "⭐" : 'No ratings yet'; ?></p>
-
-        <?php if ($reviews) : ?>
-            <ul>
-                <?php foreach ($reviews as $review) : ?>
-                    <li>
-                        <strong><?php echo htmlspecialchars($review['username']); ?></strong>
-                        <span><?php echo htmlspecialchars($review['rating']); ?> ⭐</span>
-                        <p><?php echo htmlspecialchars($review['comment']); ?></p>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        <?php else : ?>
-            <p>No reviews yet.</p>
-        <?php endif; ?>
+    <div class="comment-container">
         <h3>Rate and review this product</h3>
         <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) : ?>
             <form method="post" action="">
                 <label for="rating">Rating:</label>
                 <select id="rating" name="rating" required>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                    <option value="1">1 ⭐</option>
+                    <option value="2">2 ⭐</option>
+                    <option value="3">3 ⭐</option>
+                    <option value="4">4 ⭐</option>
+                    <option value="5">5 ⭐</option>
                 </select><br><br>
 
                 <label for="comment">Comment:</label>
-                <textarea id="comment" name="comment" required></textarea><br><br>
+                <textarea id="comment" name="comment" placeholder="Your rating here" required></textarea><br><br>
 
                 <input type="submit" value="Submit Review">
             </form>
         <?php else : ?>
             <p>You must be logged in to write a review.</p>
         <?php endif; ?>
+    </div>
+    <div class="review-container">
+        <h3>Reviews</h3>
+        <?php if ($reviews) : ?>
+            <ul>
+                <?php foreach ($reviews as $review) : ?>
+                    <li class="review-all">
+                        <strong><?php echo htmlspecialchars($review['username']); ?></strong>
+                        <br>
+                        <span><?php echo htmlspecialchars($review['rating']); ?> ⭐</span>
+                        <p><?php echo htmlspecialchars($review['comment']); ?></p>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
 
+        <?php else : ?>
+            <p>No reviews yet.</p>
+        <?php endif; ?>
     </div>
 </main>
 

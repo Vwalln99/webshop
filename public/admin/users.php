@@ -30,44 +30,29 @@ $users = getAllUsers($pdo);
 ?>
 
 <main>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="/webshop/public/admin/index.php">Home</a></li>
-                <li><a href="/webshop/public/admin/products.php">Products</a></li>
-                <li><a href="/webshop/public/admin/users.php">Users</a></li>
-                <li><a href="/webshop/public/admin/logout.php">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
+    <h2>User Management</h2>
 
-    <main>
-        <h2>User Management</h2>
-
-        <table>
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+        <?php foreach ($users as $user) : ?>
             <tr>
-                <th>Username</th>
-                <th>Role</th>
-                <th>Action</th>
+                <td><?php echo htmlspecialchars($user['username']); ?></td>
+                <td><?php echo htmlspecialchars($user['role']); ?></td>
+                <td>
+                    <form action="users.php" method="post">
+                        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                        <select name="role">
+                            <option value="user" <?php echo ($user['role'] === 'user') ? 'selected' : ''; ?>>User</option>
+                            <option value="admin" <?php echo ($user['role'] === 'admin') ? 'selected' : ''; ?>>Admin</option>
+                        </select>
+                        <button type="submit">Update Role</button>
+                    </form>
+                </td>
             </tr>
-            <?php foreach ($users as $user) : ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($user['username']); ?></td>
-                    <td><?php echo htmlspecialchars($user['role']); ?></td>
-                    <td>
-                        <form action="users.php" method="post">
-                            <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                            <select name="role">
-                                <option value="user" <?php echo ($user['role'] === 'user') ? 'selected' : ''; ?>>User</option>
-                                <option value="admin" <?php echo ($user['role'] === 'admin') ? 'selected' : ''; ?>>Admin</option>
-                            </select>
-                            <button type="submit">Update Role</button>
-                        </form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
-    </main>
+        <?php endforeach; ?>
+    </table>
 </main>
-
-</html>

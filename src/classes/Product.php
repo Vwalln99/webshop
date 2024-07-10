@@ -63,4 +63,17 @@ class Product
         $stmt = $this->db->prepare("INSERT INTO product_images (product_id, image_url) VALUES (:product_id, :image_url)");
         $stmt->execute([':product_id' => $product_id, ':image_url' => $image_url]);
     }
+
+    public function getTopSellingProducts()
+    {
+        $sql = "SELECT products.*, AVG(reviews.rating) as average_rating, COUNT(reviews.product_id) as review_count
+                FROM products
+                LEFT JOIN reviews ON products.id = reviews.product_id
+                GROUP BY products.id
+                ORDER BY average_rating DESC
+                LIMIT 6";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

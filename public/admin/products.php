@@ -116,12 +116,12 @@ $products = $productObj->getAllProducts();
                         $images = $productObj->getProductImages($product['id']);
                         ?>
                         <input type="file" name="image">
-                        <input type="submit" name="upload_image" value="Bild hochladen">
+                        <input type="submit" name="upload_image" value="Upload image">
                     </td>
                     <td>
                         <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
-                        <input type="submit" name="update" value="Aktualisieren">
-                        <input type="submit" name="delete" value="Löschen">
+                        <input type="submit" name="update" value="Update" class="button-admin">
+                        <input type="submit" name="delete" value="🗑️" class="button-admin">
                     </td>
                 </form>
             </tr>

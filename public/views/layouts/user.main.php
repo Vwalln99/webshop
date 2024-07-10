@@ -1,5 +1,13 @@
 <?php
-require '../../config/database.php';
-require '../../src/vendor/autoload.php';
-require_once '../../src/classes/Database.php';
-$users = $pdo->query("SELECT * FROM users")->fetchAll(PDO::FETCH_ASSOC);
+require_once '../../../config/database.php';
+session_start();
+
+$updateMessage = "";
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
+    $updateMessage = "Data successfully updated";
+    $_SESSION['update_message'] = $updateMessage;
+    header('Location: /webshop/public/views/user.view.php');
+    unset($_SESSION['update_message']);
+    exit();
+}

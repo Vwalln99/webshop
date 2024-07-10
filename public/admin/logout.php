@@ -3,5 +3,5 @@ session_start();
 
 session_unset();
 session_destroy();
-header('Location: /webshop/public/index.php');
+header('Location: /webshop/public/views/index.php');
 exit();

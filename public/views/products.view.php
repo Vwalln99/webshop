@@ -13,17 +13,17 @@ $products = $productObj->getAllProducts();
 
 <main>
     <div>
-        <h2>Products</h2>
+        <h2 class="ueberschrift">Products</h2>
         <ul class="products-container">
             <?php foreach ($products as $product) : ?>
                 <li class="products">
+                    <?php
+                    $images = $productObj->getProductImages($product['id']);
+                    if ($images) {
+                        echo '<img src="' . htmlspecialchars($images[0]['image_url']) . '" alt="' . htmlspecialchars($product['name']) . '" style="width:100px;height:75px;">';
+                    }
+                    ?>
                     <a href="product.view.php?id=<?php echo $product['id']; ?>">
-                        <?php
-                        $images = $productObj->getProductImages($product['id']);
-                        if ($images) {
-                            echo '<img src="' . htmlspecialchars($images[0]['image_url']) . '" alt="' . htmlspecialchars($product['name']) . '" style="width:100px;height:75px;">';
-                        }
-                        ?>
                         <?php echo htmlspecialchars($product['name']); ?>
                     </a>
                     <p>Price: <?php echo htmlspecialchars($product['price']); ?> EUR</p>
