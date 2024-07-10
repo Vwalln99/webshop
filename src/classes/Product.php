@@ -22,6 +22,12 @@ class Product
         $stmt->execute([':id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function getProductByName($name)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM products WHERE name = :name");
+        $stmt->execute([':name' => $name]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
     public function addProduct($name, $description, $price, $category_id)
     {
