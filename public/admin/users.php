@@ -1,5 +1,5 @@
 <?php
-session_start();
+require 'header.admin.php';
 
 if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in'] || $_SESSION['role'] !== 'admin') {
     header('Location: /webshop/public/index.php');

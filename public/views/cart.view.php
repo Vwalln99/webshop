@@ -22,12 +22,10 @@ $cartItems = $cart->getCartItems();
 $totalPrice = $cart->getTotalPrice();
 
 if (isset($_GET['success']) && $_GET['success'] === 'true') {
-    $orderDetails = '<h2>Order Confirmation</h2><p>Thank you for your order! Here are the details:</p><ul>';
+    $orderDetails = '<p>Thank you for your order! Here are the details:</p><ul>';
     foreach ($cartItems as $item) {
-        $orderDetails .= '<li>' . htmlspecialchars($item['name']) . ' - ' . $item['quantity'] . ' x ' . htmlspecialchars($item['price']) . ' EUR </li>';
+        $orderDetails .= '<li>' . $item['name'] . ' - ' . $item['quantity'] . ' x ' . $item['price'] . ' EUR </li>' . '<p>Total Price: ' . $totalPrice . ' EUR</p>';
     }
-    $orderDetails .= '</ul>';
-    $orderDetails .= '<p>Total Price: ' . $totalPrice . ' EUR</p>';
 
     $email = new Email($mail_config);
     $user_email = "wallner.viktoria@gmx.net";
@@ -36,10 +34,12 @@ if (isset($_GET['success']) && $_GET['success'] === 'true') {
 
     if ($email->send_mail($mail_config['username'], $user_email, $subject, $message)) {
         echo "Confirmation email sent!";
+        $cart->removeAllItems();
+        header('Location: /webshop/public/views/cart.view.php');
+        exit;
     } else {
         echo "Failed to send confirmation email.";
     }
-    $cart->removeAllItems();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -69,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <th>Quantity</th>
                         <th>Price</th>
                         <th>Total</th>
-                        <th>Action</th>
                     </tr>
                     <?php foreach ($cartItems as $item) : ?>
                         <tr>
@@ -93,10 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </tr>
                 </table>
             </form>
-            <a href="checkout.view.php">Checkout</a>
+            <a href="checkout.view.php" class="button">Checkout</a>
         <?php endif; ?>
     </div>
-    <?php include '../../includes/footer.php'; ?>
 </main>
-
-</html>
+<?php include '../../includes/footer.php'; ?>

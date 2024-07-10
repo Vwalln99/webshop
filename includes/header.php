@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-//include '../../config/database.php';
+include '../../config/database.php';
 
 $totalItemsInCart = 0;
 
@@ -28,11 +28,11 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
     <header>
         <nav>
             <ul>
-                <li><a href="/webshop/public/index.php">Home</a></li>
+                <li><a href="/webshop/public/views/index.php">Home</a></li>
                 <li><a href="/webshop/public/views/products.view.php">Products</a></li>
-                <li><a href="/webshop/public/views/cart.view.php">Cart (<?php echo $totalItemsInCart; ?>)</a></li>
+                <li><a href="/webshop/public/views/cart.view.php">🛒 (<?php echo $totalItemsInCart; ?>)</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">Kategorien</a>
+                    <a href="#" class="dropbtn">Categories</a>
                     <div class="dropdown-content">
                         <?php
                         $stmt = $pdo->query("SELECT * FROM categories");
@@ -46,7 +46,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                 </li>
                 <?php
                 if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-                    echo '<li><a href="#">' . $_SESSION['username'] . '</a></li>';
+                    echo '<li><a href="/webshop/public/views/user.view.php">' . $_SESSION['username'] . '</a></li>';
                     echo '<li><a href="/webshop/public/views/layouts/logout.main.php">Logout</a></li>';
                 } else {
                     echo '<li><a href="/webshop/public/views/login.view.php">Login</a></li>';

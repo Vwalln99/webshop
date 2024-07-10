@@ -1,3 +1,9 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webshop</title>
+    <link rel="stylesheet" href="/webshop/public/styles.css">
+</head>
 <main>
     <h2>Register</h2>
     <?php if (isset($error)) : ?>

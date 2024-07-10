@@ -38,10 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: /webshop/public/index.php');
             }
             exit();
-        } else {
-            echo "Ungültiges Passwort.";
         }
-    } else {
-        echo "Benutzer nicht gefunden.";
+        $error = "Password or username incorrect.";
+        header('Location: /webshop/public/views/login.view.php?error=' . urlencode($error));
+        exit();
     }
 }

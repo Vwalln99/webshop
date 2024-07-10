@@ -9,7 +9,7 @@ if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in'] || $_SESSION['role
 <main>
 
     <main>
-        <h2>Adminbereich</h2>
+        <h2>Admin area</h2>
         <p>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</p>
         <p>Manage your webshop here.</p>
     </main>

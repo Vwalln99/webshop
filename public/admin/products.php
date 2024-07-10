@@ -92,11 +92,10 @@ $products = $productObj->getAllProducts();
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Beschreibung</th>
-            <th>Preis</th>
-            <th>Kategorie</th>
-            <th>Bilder</th>
-            <th>Aktionen</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Product picture</th>
         </tr>
         <?php foreach ($products as $product) : ?>
             <tr>
@@ -115,11 +114,6 @@ $products = $productObj->getAllProducts();
                     <td>
                         <?php
                         $images = $productObj->getProductImages($product['id']);
-                        if ($images) {
-                            foreach ($images as $image) {
-                                echo '<img src="' . htmlspecialchars($image['image_url']) . '" alt="' . htmlspecialchars($product['name']) . '>';
-                            }
-                        }
                         ?>
                         <input type="file" name="image">
                         <input type="submit" name="upload_image" value="Bild hochladen">

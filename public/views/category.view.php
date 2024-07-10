@@ -2,6 +2,7 @@
 require '../../config/database.php';
 require '../../src/classes/Product.php';
 require '../../src/classes/Review.php';
+include '../../includes/header.php';
 
 $productObj = new Product($pdo);
 $reviewObj = new Review($pdo);
@@ -22,9 +23,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <main>
-    <?php include '../../includes/header.php'; ?>
-
-    <h2>Produkte in dieser Kategorie</h2>
+    <h2>Products</h2>
 
     <?php foreach ($products as $product) : ?>
         <li>
@@ -43,11 +42,10 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <p>Rating:
                 <?php
                 $average_rating = $reviewObj->getAverageRatingByProductId($product['id']);
-                echo $average_rating ? number_format($average_rating, 1) : 'No ratings yet';
+                echo $average_rating ? number_format($average_rating, 1) . "⭐" : 'No ratings yet';
                 ?>
             </p>
         </li>
     <?php endforeach; ?>
-
-    <?php include '../../includes/footer.php'; ?>
 </main>
+<?php include '../../includes/footer.php'; ?>

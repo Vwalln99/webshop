@@ -3,6 +3,7 @@
 require '../../config/database.php';
 require '../../src/classes/Product.php';
 require '../../src/classes/Review.php';
+include '../../includes/header.php';
 
 $productObj = new Product($pdo);
 $reviewObj = new Review($pdo);
@@ -11,12 +12,11 @@ $products = $productObj->getAllProducts();
 ?>
 
 <main>
-    <?php include '../../includes/header.php'; ?>
     <div>
         <h2>Products</h2>
-        <ul>
+        <ul class="products-container">
             <?php foreach ($products as $product) : ?>
-                <li>
+                <li class="products">
                     <a href="product.view.php?id=<?php echo $product['id']; ?>">
                         <?php
                         $images = $productObj->getProductImages($product['id']);
@@ -30,12 +30,12 @@ $products = $productObj->getAllProducts();
                     <p>Rating:
                         <?php
                         $average_rating = $reviewObj->getAverageRatingByProductId($product['id']);
-                        echo $average_rating ? number_format($average_rating, 1) : 'No ratings yet';
+                        echo $average_rating ? number_format($average_rating, 1) . '⭐' : 'No ratings yet';
                         ?>
                     </p>
                 </li>
             <?php endforeach; ?>
         </ul>
     </div>
-    <?php include '../../includes/footer.php'; ?>
 </main>
+<?php include '../../includes/footer.php'; ?>
