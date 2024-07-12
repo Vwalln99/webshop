@@ -51,6 +51,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php
                     $average_rating = $reviewObj->getAverageRatingByProductId($product['id']);
                     echo $average_rating ? number_format($average_rating, 1) . "⭐" : 'No ratings yet';
+
                     ?>
                 </p>
             </li>

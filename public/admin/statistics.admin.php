@@ -11,9 +11,16 @@ if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in'] || $_SESSION['role
     header('Location: /webshop/public/index.php');
     exit();
 }
-$name = "";
-$product = $productObj->getProductByName($name);
-$ratings = $productObj->getTopSellingProducts();
+$topSellingProducts = $productObj->getTopSellingProducts();
+$productsWithRatings = [];
+
+foreach ($topSellingProducts as $product) {
+    $averageRating = $reviewObj->getAverageRatingByProductId($product['id']);
+    $productsWithRatings[] = [
+        'name' => $product['name'],
+        'average_rating' => $averageRating
+    ];
+}
 ?>
 
 <main>
@@ -26,15 +33,16 @@ $ratings = $productObj->getTopSellingProducts();
 
     <script>
         const ctx = document.getElementById('bestRatedProducts');
+        const productsWithRatings = <?php echo json_encode($productsWithRatings); ?>;
 
+        const names = productsWithRatings.map(product => product.name);
+        const ratings = productsWithRatings.map(product => product.average_rating);
 
-        const productNames = <?php echo json_encode($productObj->getProductByName($name)); ?>;
-        const ratings = <?php echo json_encode($productObj->getTopSellingProducts()); ?>;
-
+        console.log(ratings);
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: productNames,
+                labels: names,
                 datasets: [{
                     label: 'Best Rated Products',
                     data: ratings,

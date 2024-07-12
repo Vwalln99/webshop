@@ -34,6 +34,7 @@ class Review
         $sql = "SELECT AVG(rating) as average_rating FROM reviews WHERE product_id = :product_id";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':product_id' => $product_id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC)['average_rating'];
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? floatval($result['average_rating']) : null;
     }
 }
