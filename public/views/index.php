@@ -45,7 +45,6 @@ $topSellingProduct = $productObj->getTopSellingProducts();
                         <?php
                         $average_rating = $reviewObj->getAverageRatingByProductId($product['id']);
                         echo $average_rating ? number_format($average_rating, 1) . "⭐" : 'No ratings yet';
-                        echo gettype($average_rating);
                         ?>
                     </p>
                 </div>
